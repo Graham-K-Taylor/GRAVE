@@ -7,3 +7,5 @@ let config = {type: Phaser.WEBGL,
     scene: [Menu, Act1, Act2, Act3, Tutorial1, Tutorial2, Tutorial3] }
 const game = new Phaser.Game(config);
 let KeyF, KeyR, KeyT;
+let borderUISize = game.config.height / 15;
+let borderPadding = borderUISize / 3;

@@ -3,14 +3,16 @@ class Act1 extends Phaser.Scene {
         super("act1Scene");
     }
 
-    preload(){
+    preload(){ //load assets
         this.load.path = './assets/';
         this.load.spritesheet('slime','slime.png',{frameWidth: 16, frameHeight: 16});
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'area01.json');
+        //this.load.image('exit', 'GOAL'); this was for rendering a tile to act as the goal, but im probably just going to use a tile layer for that :P
     }
 
     create(){
+        //add tilemap, layers, animate slime, rig camera, bind it to the tilemap, and add collision
         const map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('tileset','tilesetImage');
         const bgLayer = map.createLayer('Background', tileset, 0,0);
@@ -28,17 +30,19 @@ class Act1 extends Phaser.Scene {
         this.slime.body.setCollideWorldBounds(true);
         this.VEL = 100;
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.cameras.main.setBounds(0, -109, 400, map.heightInPixels+109);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(this.slime, true, .25, .25);
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
         terrainLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.slime, terrainLayer);
         treeLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.slime, treeLayer);
+        //make sure the F key is also bound
         KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
     }
 
     update(){
+        //respond to input and convert to movement using Vector2
         this.direction = new Phaser.Math.Vector2(0);
         if(this.cursors.left.isDown){
             this.direction.x = -1;
@@ -51,8 +55,9 @@ class Act1 extends Phaser.Scene {
         }else if(this.cursors.down.isDown){
             this.direction.y = 1;
         }
-        this.direction.normalize();
-        this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+        this.direction.normalize(); // makes sure movement speed is constant even on a diagonal
+        this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y); // sets the speed to be the actual speed and not 1 from normalize
+        //allows the player to press F to jump back to the menu
         if(KeyF.isDown){
             this.scene.start("menuScene");
         }
