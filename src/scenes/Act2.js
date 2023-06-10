@@ -14,8 +14,8 @@ class Act2 extends Phaser.Scene {
             y: game.config.height,
             speedY: {min:-20, max:35},
             speedX: {min:10, max:40},
-            accelerationY: {random: [-12,-19]},
-            accelerationX: {random: [-12,19]},
+            accelerationY: {random: [-19,-8]},
+            accelerationX: {random: [-12,12]},
             scale: {random: [.3, 1]},
             alpha : {random: [0, 1]},
             frequency: -1,
@@ -38,13 +38,17 @@ class Act2 extends Phaser.Scene {
         KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         this.light  = this.lights.addLight(game.config.width/2, game.config.height/2, 200);
         this.lights.enable().setAmbientColor(0x555555);
+        KeyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
     }
 
     update(){
         this.newEventTime = new Date;
-        if(KeyF.isDown && (this.newEventTime - this.eventTime) > 500){
+        if(Phaser.Input.Keyboard.JustDown(KeyF) && (this.newEventTime - this.eventTime) > 500){
             this.emitter.explode();
             this.eventTime = new Date;
+        }
+        if(KeyR.isDown){
+            this.scene.start("menuScene");
         }
     }
 }

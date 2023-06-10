@@ -46,19 +46,23 @@ class Act3 extends Phaser.Scene {
         this.mask.invertAlpha = true;
 
         this.overlay.setMask(this.mask);
+        KeyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
     }
 
     update(){
         if(this.radius > 0){
             this.cricle.destroy();
             this.cricle = this.make.graphics();
-            this.radius -=.1;
+            this.radius -=.5;
             this.cricle.fillStyle(0xffffff).fillCircle(game.config.width/2, game.config.height/2,this.radius);
             this.mask.destroy();
             this.mask = new Phaser.Display.Masks.BitmapMask(this, this.cricle);
             this.mask.invertAlpha = true;
 
             this.overlay.setMask(this.mask);
+            if(KeyT.isDown){
+                this.scene.start("menuScene");
+            }
         }
         //this.cricle.radius = this.cricle.radius - .01;
         //console.log(this.cricle.radius);

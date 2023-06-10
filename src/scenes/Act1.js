@@ -28,13 +28,14 @@ class Act1 extends Phaser.Scene {
         this.slime.body.setCollideWorldBounds(true);
         this.VEL = 100;
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.cameras.main.setBounds(0, 0, map.WidthInPixels, map.heightInPixels);
+        this.cameras.main.setBounds(0, -109, 400, map.heightInPixels+109);
         this.cameras.main.startFollow(this.slime, true, .25, .25);
         this.physics.world.bounds.setTo(0,0,map.widthInPixels, map.heightInPixels);
         terrainLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.slime, terrainLayer);
         treeLayer.setCollisionByProperty({collides: true});
         this.physics.add.collider(this.slime, treeLayer);
+        KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
     }
 
     update(){
@@ -52,5 +53,8 @@ class Act1 extends Phaser.Scene {
         }
         this.direction.normalize();
         this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y);
+        if(KeyF.isDown){
+            this.scene.start("menuScene");
+        }
     }
 }
