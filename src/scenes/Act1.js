@@ -10,11 +10,13 @@ class Act1 extends Phaser.Scene {
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'area01.json');
         //this.load.image('exit', 'GOAL'); this was for rendering a tile to act as the goal, but im probably just going to use a tile layer for that :P
+        //update: just kidding im even lazier, im using a raw X and Y value to be the goal LMAO
     }
 
     create(){
         //add tilemap, layers, animate slime, rig camera, bind it to the tilemap, and add collision
-        
+        this.fires = [0,0];
+        this.fires = [];
         const map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('tileset','tilesetImage');
         const bgLayer = map.createLayer('Background', tileset, 0,0);
@@ -43,7 +45,7 @@ class Act1 extends Phaser.Scene {
         KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         this.overlay = this.add.graphics();
 
-        this.overlay.fillStyle(0xFF0000, .40).fillRect(0, 0, 800, 600);
+        this.overlay.fillStyle(0xFF0000, .40).fillRect(0, 0,  map.widthInPixels, map.heightInPixels);
     }
 
     update(){
@@ -71,6 +73,10 @@ class Act1 extends Phaser.Scene {
             this.slime.play('jiggle');
         }
         //allows the player to press F to jump back to the menu
+        console.log(this.slime.x, this.slime.y);
+        if(this.slime.x >= 2127.1565055759784 && this.slime.x <= 2168 && this.slime.y >=371.42045464208167 && this.slime.y <=415.59728239943075){
+            this.scene.start("menuScene");
+        }
         if(KeyF.isDown){
             this.scene.start("menuScene");
         }
