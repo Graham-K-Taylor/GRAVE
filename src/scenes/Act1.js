@@ -54,7 +54,7 @@ class Act1 extends Phaser.Scene {
         //make sure the F key is also bound
         KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         this.overlay = this.add.graphics();
-
+        //tinge the map with a hint of red for fire flavor
         this.overlay.fillStyle(0xFF0000, .40).fillRect(0, 0,  map.widthInPixels, map.heightInPixels);
         this.timer = new Date;
         this.SpawnTimer = 100;
@@ -91,9 +91,9 @@ class Act1 extends Phaser.Scene {
         if(this.slime.x >= 2127.1565055759784 && this.slime.x <= 2168 && this.slime.y >=371.42045464208167 && this.slime.y <=415.59728239943075){
             this.scene.start("menuScene");
         }
-        if(KeyF.isDown){
+        /*if(KeyF.isDown){
             this.scene.start("menuScene");
-        }
+        }*/
         if(this.timed - this.timer > this.SpawnTimer){
             this.timer = new Date;
             this.varix = this.slime.x + game.config.width/2 - (Math.random() * game.config.width);
@@ -101,6 +101,7 @@ class Act1 extends Phaser.Scene {
             let firebomb = new FireBomb(this, this.varix + (this.varix%16), (this.variy + (this.variy%16)), 'fireBomb',);
             this.fireBombs.push(firebomb);
         }
+        //dunno why, but the firebombs instantly explode. whatever, fire will just appear now
         this.fireBombs.forEach((fireBomba) => {fireBomba.update();})
         //this.Fire.forEach((fires) => {fires.update();})
         this.physics.world.collide(this.slime, this.Fire, this.HURT, null, this);

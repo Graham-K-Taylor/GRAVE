@@ -27,6 +27,22 @@ class Act2 extends Phaser.Scene {
             lifespan : 40000,
             angle: {min:0, max:180}
         });
+        let menuConfig = {
+            fontFamily: 'fantasy',
+            fontSize: '24px',
+            backgroundColor: '#000',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+            top: 5,
+            bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
+        // show menu text
+        this.message = this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Why do fireflies have to die so soon?', menuConfig).setOrigin(0.5).setAlpha(0);
+        this.message.setDepth(-99);
         //make the emitter start out as not emitting
         this.emitter.stop();
         //idk what this does but it sounds cool
@@ -40,6 +56,9 @@ class Act2 extends Phaser.Scene {
         //I have no fucking clue how lights work but I added them for later (I want to attach a light to each particle)
         this.light  = this.lights.addLight(game.config.width/2, game.config.height/2, 200);
         this.lights.enable().setAmbientColor(0x555555);
+        this.tima = new Date;
+        this.TimeForGame = 60000;
+        this.Alpha = 0;
     }
 
     update(){
@@ -52,9 +71,12 @@ class Act2 extends Phaser.Scene {
                 this.sparkle.play();
             }
             this.eventTime = new Date;
+            this.Alpha += .0005;
+            this.message.setAlpha(this.Alpha);
+            
         }
         // if R is pressed, the menu is loaded
-        if(KeyR.isDown){
+        if(this.newEventTime - this.tima > this.TimeForGame){
             this.scene.start("menuScene");
         }
     }

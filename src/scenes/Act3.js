@@ -4,7 +4,7 @@ class Act3 extends Phaser.Scene {
     }
 
     preload(){ // loads the images
-        this.load.image('temp', './assets/temp1.png');
+        this.load.image('temp', './assets/finale.png');
     }
 
     create(){
@@ -32,11 +32,13 @@ class Act3 extends Phaser.Scene {
     }
 
     update(){
+        this.time = new Date;
         //if the circle still exists, redo everything, destroying the old things in the process. This is so bad. it crashed pretty much every time
         //UPDATE: for some fucking reason it stopped crashing, now it just stutters where it should crash
         //I have no clue what causes this, but I'm just going to take it as a sign from god that it should be this way and cut my losses
         //this code called me a bitch an took my lunch money
         if(this.radius > 0){
+            this.finishtime = new Date;
             this.cricle.destroy();
             this.cricle = this.make.graphics();
             this.radius -=.05;
@@ -49,7 +51,7 @@ class Act3 extends Phaser.Scene {
             
         }
         //oh yeah and you can navigate back to the home screen using T
-        if(KeyT.isDown){
+        if(this.time - this.finishtime > 5000){
             this.scene.start("menuScene");
         }
         //this.cricle.radius = this.cricle.radius - .01;
