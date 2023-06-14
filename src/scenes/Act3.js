@@ -33,11 +33,13 @@ class Act3 extends Phaser.Scene {
 
     update(){
         //if the circle still exists, redo everything, destroying the old things in the process. This is so bad. it crashed pretty much every time
+        //UPDATE: for some fucking reason it stopped crashing, now it just stutters where it should crash
+        //I have no clue what causes this, but I'm just going to take it as a sign from god that it should be this way and cut my losses
         //this code called me a bitch an took my lunch money
         if(this.radius > 0){
             this.cricle.destroy();
             this.cricle = this.make.graphics();
-            this.radius -=.5;
+            this.radius -=.05;
             this.cricle.fillStyle(0xffffff).fillCircle(game.config.width/2, game.config.height/2,this.radius);
             this.mask.destroy();
             this.mask = new Phaser.Display.Masks.BitmapMask(this, this.cricle);

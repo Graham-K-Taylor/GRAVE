@@ -39,13 +39,13 @@ class Menu extends Phaser.Scene {
     update(){
         //each of the keys lead to the scene in their if block (F -> act1, so on so forth)
         if(KeyF.isDown){
-            this.scene.start("act1Scene");
+            this.scene.start("tutorial1Scene");
         }
         if(KeyR.isDown){
-            this.scene.start("act2Scene");
+            this.scene.start("tutorial2Scene");
         }
         if(KeyT.isDown){
-            this.scene.start("act3Scene");
+            this.scene.start("tutorial3Scene");
         }
     }
 }
