@@ -5,7 +5,8 @@ class Act1 extends Phaser.Scene {
 
     preload(){ //load assets
         this.load.path = './assets/';
-        this.load.spritesheet('slime','slime.png',{frameWidth: 16, frameHeight: 16});
+        this.load.spritesheet('slime','player.png',{frameWidth: 16, frameHeight: 32});
+        this.load.spritesheet('FIRE','sprite-0006.png',{frameWidth: 16, frameHeight: 16});
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'area01.json');
         //this.load.image('exit', 'GOAL'); this was for rendering a tile to act as the goal, but im probably just going to use a tile layer for that :P
@@ -13,6 +14,7 @@ class Act1 extends Phaser.Scene {
 
     create(){
         //add tilemap, layers, animate slime, rig camera, bind it to the tilemap, and add collision
+        
         const map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('tileset','tilesetImage');
         const bgLayer = map.createLayer('Background', tileset, 0,0);
@@ -39,14 +41,19 @@ class Act1 extends Phaser.Scene {
         this.physics.add.collider(this.slime, treeLayer);
         //make sure the F key is also bound
         KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        this.overlay = this.add.graphics();
+
+        this.overlay.fillStyle(0xFF0000, .40).fillRect(0, 0, 800, 600);
     }
 
     update(){
         //respond to input and convert to movement using Vector2
         this.direction = new Phaser.Math.Vector2(0);
         if(this.cursors.left.isDown){
+            this.slime.flipX = true;
             this.direction.x = -1;
         }else if(this.cursors.right.isDown){
+            this.slime.flipX = false;
             this.direction.x = 1;
         }
 
@@ -57,6 +64,12 @@ class Act1 extends Phaser.Scene {
         }
         this.direction.normalize(); // makes sure movement speed is constant even on a diagonal
         this.slime.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y); // sets the speed to be the actual speed and not 1 from normalize
+        if(this.direction.x == 0 && this.direction.y == 0){
+            this.slime.stop('jiggle');
+        }
+        else if (!(this.slime.anims.isPlaying)){
+            this.slime.play('jiggle');
+        }
         //allows the player to press F to jump back to the menu
         if(KeyF.isDown){
             this.scene.start("menuScene");
