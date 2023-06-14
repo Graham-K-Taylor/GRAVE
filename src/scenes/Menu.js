@@ -11,6 +11,7 @@ class Menu extends Phaser.Scene {
         KeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         KeyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         KeyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+        KeyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
         //set up the text configs
         let menuConfig = {
             fontFamily: 'fantasy',
@@ -32,7 +33,7 @@ class Menu extends Phaser.Scene {
         //Text right above the textfield in the Menu, below Game title.
         this.add.text(game.config.width/2, game.config.height/2, 'Press F to go to the first minigame,\nR for the second,and T for the third.', menuConfig).setOrigin(0.5);
 
-        this.add.text(0, game.config.height/2 + 40, "If you want to go back to the menu, press the corresponding button \n(i.e. if you're in the first minigame, press F for the menu.)");
+        this.add.text(0, game.config.height/2 + 40, "Press C to go to the credits.");
         
     }
 
@@ -46,6 +47,9 @@ class Menu extends Phaser.Scene {
         }
         if(KeyT.isDown){
             this.scene.start("tutorial3Scene");
+        }
+        if(KeyC.isDown){
+            this.scene.start("creditsScene");
         }
     }
 }
