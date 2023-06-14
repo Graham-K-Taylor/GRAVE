@@ -5,9 +5,10 @@ class Act1 extends Phaser.Scene {
 
     preload(){ //load assets
         this.load.path = './assets/';
-        this.load.spritesheet('slime','player.png',{frameWidth: 16, frameHeight: 32});
+        this.load.spritesheet('slime','player.png',{frameWidth: 16, frameHeight: 19});
         this.load.spritesheet('FIRE','sprite-0006.png',{frameWidth: 16, frameHeight: 16});
         this.load.image('tilesetImage', 'tileset.png');
+        this.load.image('fireBomb', 'fireBomb.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'area01.json');
         //this.load.image('exit', 'GOAL'); this was for rendering a tile to act as the goal, but im probably just going to use a tile layer for that :P
         //update: just kidding im even lazier, im using a raw X and Y value to be the goal LMAO
@@ -15,8 +16,11 @@ class Act1 extends Phaser.Scene {
 
     create(){
         //add tilemap, layers, animate slime, rig camera, bind it to the tilemap, and add collision
-        this.fires = [0,0];
-        this.fires = [];
+        this.fireBombs = [];
+        //this.Fire = [];
+        this.Fire = this.add.group({
+            runChildUpdate: true
+        });
         const map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('tileset','tilesetImage');
         const bgLayer = map.createLayer('Background', tileset, 0,0);
@@ -29,6 +33,12 @@ class Act1 extends Phaser.Scene {
             frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('slime', {start: 0, end: 1})
+        });
+        this.anims.create({
+            key: 'flare',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('FIRE', {start: 0, end: 1})
         });
         this.slime.play('jiggle');
         this.slime.body.setCollideWorldBounds(true);
@@ -46,9 +56,13 @@ class Act1 extends Phaser.Scene {
         this.overlay = this.add.graphics();
 
         this.overlay.fillStyle(0xFF0000, .40).fillRect(0, 0,  map.widthInPixels, map.heightInPixels);
+        this.timer = new Date;
+        this.SpawnTimer = 100;
+        this.health = 100;
     }
 
     update(){
+        this.timed = new Date;
         //respond to input and convert to movement using Vector2
         this.direction = new Phaser.Math.Vector2(0);
         if(this.cursors.left.isDown){
@@ -79,6 +93,29 @@ class Act1 extends Phaser.Scene {
         }
         if(KeyF.isDown){
             this.scene.start("menuScene");
+        }
+        if(this.timed - this.timer > this.SpawnTimer){
+            this.timer = new Date;
+            this.varix = this.slime.x + game.config.width/2 - (Math.random() * game.config.width);
+            this.variy = this.slime.y + game.config.height/2 - (Math.random() * game.config.height);
+            let firebomb = new FireBomb(this, this.varix + (this.varix%16), (this.variy + (this.variy%16)), 'fireBomb',);
+            this.fireBombs.push(firebomb);
+        }
+        this.fireBombs.forEach((fireBomba) => {fireBomba.update();})
+        //this.Fire.forEach((fires) => {fires.update();})
+        this.physics.world.collide(this.slime, this.Fire, this.HURT, null, this);
+        /*for(fireBomba of this.fireBombs){
+            fireBomba.update();
+        }
+        for(fires of this.Fire){
+            fires.update();
+        }*/
+    }
+    HURT(){
+        console.log('burh');
+        this.health -=1;
+        if(this.health <= 0){
+            this.scene.restart();
         }
     }
 }
