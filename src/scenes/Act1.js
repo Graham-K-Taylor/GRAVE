@@ -6,7 +6,7 @@ class Act1 extends Phaser.Scene {
     preload(){ //load assets
         this.load.path = './assets/';
         this.load.spritesheet('slime','player.png',{frameWidth: 16, frameHeight: 19});
-        this.load.spritesheet('FIRE','sprite-0006.png',{frameWidth: 16, frameHeight: 16});
+        this.load.spritesheet('FIRE','fire.png',{frameWidth: 16, frameHeight: 16});
         this.load.image('tilesetImage', 'tileset.png');
         this.load.image('fireBomb', 'fireBomb.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'area01.json');
